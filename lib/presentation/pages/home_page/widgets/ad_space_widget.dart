@@ -36,7 +36,7 @@ class AdSpace extends StatelessWidget {
               aspectRatio: 16 / 9,
               autoPlayInterval: const Duration(seconds: 4),
               autoPlayAnimationDuration: const Duration(milliseconds: 800),
-              viewportFraction: 0.9,
+              viewportFraction: 0.92,
               enableInfiniteScroll: ads.length > 1,
               pauseAutoPlayOnTouch: true,
               scrollDirection: Axis.horizontal,
@@ -240,16 +240,23 @@ class AdSpace extends StatelessWidget {
       );
       return;
     }
-    final url = Uri.parse(link);
-    Map<String, bool> urlCache = {};
-    bool canLaunch = urlCache[link] ?? await canLaunchUrl(url);
-    urlCache[link] = canLaunch;
 
-    if (canLaunch) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
+    try {
+      final url = Uri.parse(link);
+      final canLaunch = await canLaunchUrl(url);
+
+      if (canLaunch) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        Get.snackbar(
+          'Error1'.tr,
+          'CannotLaunchUrl'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
       Get.snackbar(
-        'Error'.tr,
+        'Error2'.tr,
         'CannotLaunchUrl'.tr,
         snackPosition: SnackPosition.BOTTOM,
       );

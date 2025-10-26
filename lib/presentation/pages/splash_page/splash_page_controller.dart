@@ -7,6 +7,7 @@ import 'package:gas_user_app/presentation/util/resources/navigation_manager.dart
 class SplashPageController extends GetxController
     with GetSingleTickerProviderStateMixin {
   UsersRepo usersRepo = Get.find<UsersRepo>();
+
   // DeepLinkService deepLinkService = Get.find<DeepLinkService>();
 
   late AnimationController animationController;
@@ -24,12 +25,16 @@ class SplashPageController extends GetxController
   @override
   void onInit() {
     animationController = AnimationController(vsync: this);
-    // usersRepo.checkUserLoggedInState();
+    usersRepo.checkUserLoggedInState();
     super.onInit();
   }
 
   Future<void> openNextPage() async {
-    Get.offAllNamed(AppRoutes.registrationRoute);
+    if (usersRepo.userLoggedIn.value == true) {
+      Get.offAllNamed(AppRoutes.mainRoute);
+    } else {
+      Get.offAllNamed(AppRoutes.loginRoute);
+    }
   }
 
   @override

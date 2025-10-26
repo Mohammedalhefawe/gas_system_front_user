@@ -90,13 +90,7 @@ class VerificationPageController extends GetxController {
       type: CustomToastType.success,
     ).show();
 
-    if (typeOTP == "phone") {
-      Get.offAllNamed(
-        AppRoutes.mainRoute,
-      ); // Navigate to main route after successful registration
-    } else {
-      Get.offNamed(AppRoutes.forgotPasswordRoute); // Navigate to password reset
-    }
+    Get.offNamed(AppRoutes.loginRoute);
 
     verificationLoadingState.value = LoadingState.doneWithData;
   }

@@ -265,7 +265,7 @@ class AddressListPage extends GetView<AddressListController> {
                         BlendMode.srcIn,
                       ),
                     ),
-                    backgroundColor: Colors.grey.withOpacity(0.1),
+                    backgroundColor: Colors.grey.withValues(alpha: 0.1),
                     onPressed: () async {
                       controller.setAddress(
                         StatusLocation.update,
@@ -327,8 +327,8 @@ class AddressListPage extends GetView<AddressListController> {
 
   Widget _buildShimmerAddressItem() {
     return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withOpacity(0.3),
-      highlightColor: ColorManager.colorGrey2.withOpacity(0.1),
+      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
+      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
       child: Container(
         color: ColorManager.colorWhite,
         padding: const EdgeInsets.all(AppPadding.p20),

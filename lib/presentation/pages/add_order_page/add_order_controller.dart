@@ -7,6 +7,7 @@ import 'package:gas_user_app/presentation/custom_widgets/custom_toasts.dart';
 import 'package:gas_user_app/presentation/pages/address_page/address_page_controller.dart';
 import 'package:gas_user_app/presentation/pages/address_page/select_location_page.dart';
 import 'package:gas_user_app/presentation/pages/cart_page/cart_page_controller.dart';
+import 'package:gas_user_app/presentation/pages/orders_page/orders_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ class AddOrderPageController extends GetxController {
   final OrderRepo orderRepo = Get.find<OrderRepo>();
   final CacheService cacheService = Get.find<CacheService>();
   final CartController cartController = Get.find<CartController>();
+  late OrdersPageController ordersPageController;
   AddressListController? addressListController;
   final addresses = <AddressModel>[].obs;
   final selectedAddress = Rxn<AddressModel>();
@@ -32,6 +34,10 @@ class AddOrderPageController extends GetxController {
     if (!Get.isRegistered<AddressListController>()) {
       Get.put(AddressListController());
     }
+    if (!Get.isRegistered<OrdersPageController>()) {
+      Get.put(OrdersPageController());
+    }
+    ordersPageController = Get.find<OrdersPageController>();
     addressListController = Get.find<AddressListController>();
     fetchAddresses();
   }
@@ -141,7 +147,7 @@ class AddOrderPageController extends GetxController {
       ).show();
       return;
     }
-
+    ordersPageController.fetchOrders();
     cartController.clearCart();
     loadingState.value = LoadingState.doneWithData;
     CustomToasts(

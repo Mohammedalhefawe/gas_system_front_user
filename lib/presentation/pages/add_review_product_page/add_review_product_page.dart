@@ -88,8 +88,8 @@ class AddReviewPage extends GetView<AddReviewPageController> {
 
   Widget _buildShimmerForm() {
     return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withOpacity(0.3),
-      highlightColor: ColorManager.colorGrey2.withOpacity(0.1),
+      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
+      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.p16),
         child: Column(

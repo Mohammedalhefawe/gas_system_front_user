@@ -13,6 +13,7 @@ class OrdersPageController extends GetxController {
   final DeliveryFeeRepo deliveryFeeRepo = Get.find<DeliveryFeeRepo>();
   final orders = <OrderModel>[].obs;
   final loadingState = LoadingState.idle.obs;
+  RxInt deliveryFee = 0.obs;
 
   @override
   void onInit() {

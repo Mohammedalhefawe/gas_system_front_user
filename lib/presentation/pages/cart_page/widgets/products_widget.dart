@@ -483,7 +483,9 @@ class ProductTile extends StatelessWidget {
                   Expanded(
                     child: AppButton(
                       onPressed: onAddToReview,
-                      backgroundColor: ColorManager.colorBlack.withOpacity(0.6),
+                      backgroundColor: ColorManager.colorBlack.withValues(
+                        alpha: 0.6,
+                      ),
                       text: "Review".tr,
                     ),
                   ),
@@ -493,7 +495,7 @@ class ProductTile extends StatelessWidget {
                     child: AppButton(
                       onPressed: data.isAvailable ? onAddToCart : null,
                       backgroundColor: data.isAvailable
-                          ? ColorManager.colorPrimary.withOpacity(0.8)
+                          ? ColorManager.colorPrimary.withValues(alpha: 0.8)
                           : ColorManager.colorGrey5,
                       text: data.isAvailable ? "AddToCart".tr : "OutOfStock".tr,
                     ),

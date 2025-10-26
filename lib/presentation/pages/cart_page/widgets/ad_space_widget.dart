@@ -140,8 +140,8 @@ class AdSpace extends StatelessWidget {
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        ColorManager.colorBlack.withOpacity(0.8),
-                        ColorManager.colorBlack.withOpacity(0.3),
+                        ColorManager.colorBlack.withValues(alpha: 0.8),
+                        ColorManager.colorBlack.withValues(alpha: 0.3),
                         Colors.transparent,
                       ],
                       stops: const [0.0, 0.5, 0.8],

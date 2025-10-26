@@ -4,7 +4,6 @@ import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
 import 'package:gas_user_app/presentation/custom_widgets/custom_text_field.dart';
 import 'package:gas_user_app/presentation/custom_widgets/normal_app_bar.dart';
 import 'package:gas_user_app/presentation/pages/add_review_order_page/add_review_order_controller.dart';
-import 'package:gas_user_app/presentation/pages/add_review_product_page/add_review_product_controller.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/values_manager.dart';
 import 'package:get/get.dart';
@@ -89,8 +88,8 @@ class AddReviewOrderPage extends GetView<AddReviewOrderPageController> {
 
   Widget _buildShimmerForm() {
     return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withOpacity(0.3),
-      highlightColor: ColorManager.colorGrey2.withOpacity(0.1),
+      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
+      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.p16),
         child: Column(

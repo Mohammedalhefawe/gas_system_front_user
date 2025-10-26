@@ -48,7 +48,7 @@ class OrderDetailsPage extends GetView<OrderDetailsController> {
               width: AppSize.s100,
               height: AppSize.s100,
               decoration: BoxDecoration(
-                color: ColorManager.colorPrimary.withOpacity(0.1),
+                color: ColorManager.colorPrimary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -294,7 +294,7 @@ class OrderDetailsPage extends GetView<OrderDetailsController> {
               const SizedBox(height: AppSize.s12),
               Container(
                 height: 1,
-                color: ColorManager.colorGrey2.withOpacity(0.15),
+                color: ColorManager.colorGrey2.withValues(alpha: 0.15),
               ),
               const SizedBox(height: AppSize.s12),
               _buildSummaryRow(
@@ -427,7 +427,9 @@ class OrderDetailsPage extends GetView<OrderDetailsController> {
       decoration: BoxDecoration(
         color: ColorManager.colorGrey0,
         borderRadius: BorderRadius.circular(AppSize.s12),
-        border: Border.all(color: ColorManager.colorGrey2.withOpacity(0.3)),
+        border: Border.all(
+          color: ColorManager.colorGrey2.withValues(alpha: 0.3),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -504,8 +506,8 @@ class OrderDetailsPage extends GetView<OrderDetailsController> {
 
   Widget _buildShimmerDetails() {
     return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withOpacity(0.3),
-      highlightColor: ColorManager.colorGrey2.withOpacity(0.1),
+      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
+      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(AppPadding.p16),
         child: Column(

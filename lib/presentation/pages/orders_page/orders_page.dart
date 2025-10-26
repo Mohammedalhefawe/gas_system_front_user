@@ -1,10 +1,7 @@
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
 import 'package:gas_user_app/data/models/order_model.dart';
-import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
-import 'package:gas_user_app/presentation/pages/add_order_page/add_order_page.dart';
 import 'package:gas_user_app/presentation/pages/order_details_page/order_details_page.dart';
 import 'package:gas_user_app/presentation/pages/orders_page/orders_controller.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
@@ -41,7 +38,7 @@ class OrdersPage extends GetView<OrdersPageController> {
               width: AppSize.s120,
               height: AppSize.s120,
               decoration: BoxDecoration(
-                color: ColorManager.colorPrimary.withOpacity(0.1),
+                color: ColorManager.colorPrimary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -68,12 +65,6 @@ class OrdersPage extends GetView<OrdersPageController> {
                 color: ColorManager.colorDoveGray600,
                 height: 1.5,
               ),
-            ),
-            const SizedBox(height: AppSize.s30),
-            AppButton(
-              onPressed: () => Get.to(() => const AddOrderPage()),
-              text: 'StartShopping'.tr,
-              backgroundColor: ColorManager.colorPrimary,
             ),
           ],
         ),
@@ -241,8 +232,8 @@ class OrdersPage extends GetView<OrdersPageController> {
 
   Widget _buildShimmerList() {
     return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withOpacity(0.3),
-      highlightColor: ColorManager.colorGrey2.withOpacity(0.1),
+      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
+      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
       child: ListView.builder(
         itemCount: 4,
         itemBuilder: (context, index) {
@@ -337,9 +328,9 @@ Widget buildStatusBadge(String status) {
       vertical: AppPadding.p8,
     ),
     decoration: BoxDecoration(
-      color: color.withOpacity(0.1),
+      color: color.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(AppSize.s20),
-      border: Border.all(color: color.withOpacity(0.3), width: 1),
+      border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
     ),
     child: Row(
       mainAxisSize: MainAxisSize.min,
