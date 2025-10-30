@@ -13,8 +13,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  AppBinding().dependencies();
   await GetStorage.init();
+  AppBinding().dependencies();
   await AppTranslations.init();
   runApp(
     DevicePreview(
@@ -23,4 +23,3 @@ void main() async {
     ),
   );
 }
-

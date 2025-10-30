@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gas_user_app/core/app_config/app_translation.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
 import 'package:gas_user_app/data/models/user_model.dart';
+import 'package:gas_user_app/data/repos/notification_repo.dart';
 import 'package:gas_user_app/data/repos/users_repo.dart';
 import 'package:gas_user_app/presentation/custom_widgets/custom_toasts.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
@@ -14,6 +15,7 @@ class AccountController extends GetxController {
   final UsersRepo userRepo = Get.find<UsersRepo>();
   final user = Rxn<UserModel>();
   final loadingState = LoadingState.idle.obs;
+  NotificationRepo notificationRepo = Get.find<NotificationRepo>();
   final selectedLanguage = AppTranslations.isArabic ? 'ar'.obs : 'en'.obs;
 
   @override
@@ -139,7 +141,10 @@ class AccountController extends GetxController {
     }
     user.value = null;
     loadingState.value = LoadingState.doneWithNoData;
+    await notificationRepo.removeFCM();
+
     CustomToasts(message: 'LoggedOut'.tr, type: CustomToastType.success).show();
+
     Get.offAllNamed(AppRoutes.loginRoute);
   }
 

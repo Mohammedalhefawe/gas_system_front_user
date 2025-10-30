@@ -20,6 +20,8 @@ import 'package:gas_user_app/presentation/pages/cart_page/cart_page.dart';
 import 'package:gas_user_app/presentation/pages/cart_page/cart_page_controller.dart';
 import 'package:gas_user_app/presentation/pages/main_page/main_page.dart';
 import 'package:gas_user_app/presentation/pages/main_page/main_page_controller.dart';
+import 'package:gas_user_app/presentation/pages/notifications_page/notifications_page.dart';
+import 'package:gas_user_app/presentation/pages/notifications_page/notifications_page_controller.dart';
 import 'package:get/get.dart';
 import 'package:gas_user_app/presentation/pages/splash_page/splash_page.dart';
 import 'package:gas_user_app/presentation/pages/splash_page/splash_page_controller.dart';
@@ -112,6 +114,12 @@ abstract class NavigationManager {
       page: () => AddReviewOrderPage(),
       binding: BindingsBuilder.put(() => AddReviewOrderPageController()),
     ),
+
+    GetPage(
+      name: AppRoutes.notificationRoute,
+      page: () => NotificationsScreen(),
+      binding: BindingsBuilder.put(() => NotificationsPageController()),
+    ),
   ];
 }
 
@@ -132,4 +140,5 @@ abstract class AppRoutes {
   static const String addOrderRoute = "/addOrderRoute";
   static const String myOrderRoute = "/myOrderRoute";
   static const String addReviewOrderRoute = "/addReviewOrderRoute";
+  static const String notificationRoute = "/notificationRoute";
 }

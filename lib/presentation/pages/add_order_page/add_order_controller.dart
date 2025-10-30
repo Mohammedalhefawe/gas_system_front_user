@@ -147,7 +147,7 @@ class AddOrderPageController extends GetxController {
       ).show();
       return;
     }
-    ordersPageController.fetchOrders();
+    ordersPageController.fetchOrders(page: 1);
     cartController.clearCart();
     loadingState.value = LoadingState.doneWithData;
     CustomToasts(

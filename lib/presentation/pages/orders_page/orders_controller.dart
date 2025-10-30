@@ -13,18 +13,39 @@ class OrdersPageController extends GetxController {
   final DeliveryFeeRepo deliveryFeeRepo = Get.find<DeliveryFeeRepo>();
   final orders = <OrderModel>[].obs;
   final loadingState = LoadingState.idle.obs;
+  final loadingMoreOrdersState = LoadingState.idle.obs;
+  final currentPage = 1.obs;
+  final lastPage = 1.obs;
+  final hasMorePages = false.obs;
+  final ScrollController scrollController = ScrollController();
   RxInt deliveryFee = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    fetchOrders();
+    fetchOrders(page: 1);
+    scrollController.addListener(scrollListener);
   }
 
-  Future<void> fetchOrders() async {
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
+
+  void scrollListener() {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent * 0.8) {
+      loadMoreOrders();
+    }
+  }
+
+  Future<void> fetchOrders({required int page, int pageSize = 10}) async {
+    if (loadingState.value == LoadingState.loading) return;
     loadingState.value = LoadingState.loading;
-    final response = await orderRepo.getOrders();
-    if (!response.success) {
+
+    final response = await orderRepo.getOrders(page: page, pageSize: pageSize);
+    if (!response.success || response.data == null) {
       loadingState.value = LoadingState.hasError;
       CustomToasts(
         message: response.getErrorMessage(),
@@ -32,10 +53,52 @@ class OrdersPageController extends GetxController {
       ).show();
       return;
     }
-    orders.value = response.data ?? [];
+
+    if (page == 1) {
+      orders.clear();
+    }
+    orders.addAll(response.data!.data);
+    currentPage.value = response.data!.currentPage;
+    lastPage.value = response.data!.lastPage;
+    hasMorePages.value = currentPage.value < lastPage.value;
+
     loadingState.value = orders.isEmpty
         ? LoadingState.doneWithNoData
         : LoadingState.doneWithData;
+  }
+
+  Future<void> loadMoreOrders() async {
+    if (loadingMoreOrdersState.value == LoadingState.loading ||
+        !hasMorePages.value) {
+      return;
+    }
+
+    loadingMoreOrdersState.value = LoadingState.loading;
+
+    final nextPage = currentPage.value + 1;
+    final response = await orderRepo.getOrders(page: nextPage);
+
+    if (!response.success || response.data == null) {
+      loadingMoreOrdersState.value = LoadingState.hasError;
+      return;
+    }
+
+    orders.addAll(response.data!.data);
+    currentPage.value = response.data!.currentPage;
+    lastPage.value = response.data!.lastPage;
+    hasMorePages.value = currentPage.value < lastPage.value;
+
+    loadingMoreOrdersState.value = LoadingState.doneWithData;
+  }
+
+  Future<void> refreshOrders() async {
+    orders.clear();
+    currentPage.value = 1;
+    lastPage.value = 1;
+    hasMorePages.value = false;
+    loadingState.value = LoadingState.idle;
+    loadingMoreOrdersState.value = LoadingState.idle;
+    await fetchOrders(page: 1);
   }
 
   Future<void> cancelOrder(int orderId) async {
@@ -49,7 +112,7 @@ class OrdersPageController extends GetxController {
       ).show();
       return;
     }
-    await fetchOrders();
+    await refreshOrders();
     CustomToasts(
       message: response.successMessage ?? 'OrderCancelled'.tr,
       type: CustomToastType.success,

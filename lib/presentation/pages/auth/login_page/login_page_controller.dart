@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:gas_user_app/data/repos/notification_repo.dart';
 import 'package:get/get.dart';
 import 'package:gas_user_app/core/services/cache_service.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
@@ -9,6 +10,7 @@ import 'package:gas_user_app/presentation/util/resources/navigation_manager.dart
 class LoginPageController extends GetxController {
   CacheService cacheService = Get.find<CacheService>();
   UsersRepo usersRepo = Get.find<UsersRepo>();
+  NotificationRepo notificationRepo = Get.find<NotificationRepo>();
 
   final formKey = GlobalKey<FormState>();
   final phoneNumberController = TextEditingController();
@@ -55,6 +57,7 @@ class LoginPageController extends GetxController {
     cacheService.storeLoggedInUserAndToken(userModel, response.data!.token);
     usersRepo.userLoggedIn.value = true;
     usersRepo.loggedInUser.value = userModel;
+    notificationRepo.sendFCMForUser();
 
     CustomToasts(
       message: response.successMessage ?? "LoginSuccess".tr,

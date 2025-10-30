@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
 import 'package:gas_user_app/data/models/order_model.dart';
+import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
 import 'package:gas_user_app/presentation/pages/order_details_page/order_details_page.dart';
 import 'package:gas_user_app/presentation/pages/orders_page/orders_controller.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
@@ -78,24 +78,33 @@ class OrdersPage extends GetView<OrdersPageController> {
         const SizedBox(height: AppSize.s8),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: controller.fetchOrders,
+            onRefresh: controller.refreshOrders,
             color: ColorManager.colorPrimary,
             backgroundColor: ColorManager.colorWhite,
-            child: ListView.separated(
-              // padding: const EdgeInsets.all(AppPadding.p16),
-              itemCount: controller.orders.length,
-              itemBuilder: (context, index) {
-                final order = controller.orders[index];
-                return Column(
-                  children: [
-                    _buildOrderCard(context, order),
-                    if (index == controller.orders.length - 1)
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              slivers: [
+                SliverList.separated(
+                  itemCount: controller.orders.length,
+                  itemBuilder: (context, index) {
+                    final order = controller.orders[index];
+                    return _buildOrderCard(context, order);
+                  },
+                  separatorBuilder: (context, index) =>
                       const SizedBox(height: AppSize.s8),
-                  ],
-                );
-              },
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: AppSize.s8),
+                ),
+                if (controller.loadingMoreOrdersState.value ==
+                    LoadingState.loading)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSize.s10,
+                      ),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
+                SliverToBoxAdapter(child: SizedBox(height: AppSize.s8)),
+              ],
             ),
           ),
         ),
@@ -109,15 +118,18 @@ class OrdersPage extends GetView<OrdersPageController> {
             .toStringAsFixed(0);
 
     return InkWell(
-      onTap: () => Get.to(() => OrderDetailsPage(), arguments: order),
+      onTap: () => Get.to(() => OrderDetailsPage(), arguments: order.orderId),
       borderRadius: BorderRadius.circular(AppSize.s16),
       child: Container(
-        decoration: BoxDecoration(color: ColorManager.colorWhite),
+        decoration: BoxDecoration(
+          color: ColorManager.colorWhite,
+          borderRadius: BorderRadius.circular(AppSize.s16),
+        ),
         padding: const EdgeInsets.all(AppPadding.p20),
+        margin: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -147,10 +159,7 @@ class OrdersPage extends GetView<OrdersPageController> {
                 buildStatusBadge(order.orderStatus),
               ],
             ),
-
             const SizedBox(height: AppSize.s16),
-
-            // Address Section
             Row(
               children: [
                 Assets.icons.locationIcon.svg(
@@ -164,7 +173,7 @@ class OrdersPage extends GetView<OrdersPageController> {
                 const SizedBox(width: AppSize.s8),
                 Expanded(
                   child: Text(
-                    order.address.addressName ?? order.address.address,
+                    order.address.address,
                     style: TextStyle(
                       fontSize: FontSize.s14,
                       color: ColorManager.colorDoveGray600,
@@ -175,18 +184,12 @@ class OrdersPage extends GetView<OrdersPageController> {
                 ),
               ],
             ),
-
             const SizedBox(height: AppSize.s16),
-
-            // Divider
             Container(
               height: 1,
-              color: ColorManager.colorGrey2.withValues(alpha: .1),
+              color: ColorManager.colorGrey2.withValues(alpha: 0.1),
             ),
-
             const SizedBox(height: AppSize.s16),
-
-            // Price Breakdown
             _buildPriceRow(
               'Subtotal',
               '${double.parse(order.totalAmount).toStringAsFixed(0)} ${'SP'.tr}',
@@ -198,6 +201,20 @@ class OrdersPage extends GetView<OrdersPageController> {
             ),
             const SizedBox(height: AppSize.s8),
             _buildPriceRow('Total', '$totalAmount ${'SP'.tr}', isTotal: true),
+            if (order.orderStatus == 'pending') ...[
+              const SizedBox(height: AppSize.s16),
+              AppButton(
+                onPressed: () =>
+                    controller.showCancelConfirmation(context, order.orderId),
+                text: 'CancelOrder'.tr,
+                backgroundColor: ColorManager.colorWhite,
+                border: Border.all(
+                  width: 1,
+                  color: ColorManager.colorSecondaryRed,
+                ),
+                fontColor: ColorManager.colorSecondaryRed,
+              ),
+            ],
           ],
         ),
       ),
@@ -234,78 +251,94 @@ class OrdersPage extends GetView<OrdersPageController> {
     return Shimmer.fromColors(
       baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
       highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
-      child: ListView.builder(
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.only(bottom: AppSize.s8),
-            padding: const EdgeInsets.all(AppPadding.p20),
-            decoration: BoxDecoration(color: Colors.white),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: CustomScrollView(
+        slivers: [
+          SliverList.separated(
+            itemCount: 4,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+                padding: const EdgeInsets.all(AppPadding.p20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(AppSize.s16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(width: 120, height: 18, color: Colors.white),
-                        const SizedBox(height: AppSize.s6),
-                        Container(width: 80, height: 14, color: Colors.white),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 18,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(height: AppSize.s6),
+                            Container(
+                              width: 80,
+                              height: 14,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                        Container(width: 70, height: 28, color: Colors.white),
                       ],
                     ),
-                    Container(width: 70, height: 28, color: Colors.white),
+                    const SizedBox(height: AppSize.s16),
+                    Row(
+                      children: [
+                        Container(width: 16, height: 16, color: Colors.white),
+                        const SizedBox(width: AppSize.s8),
+                        Container(width: 200, height: 14, color: Colors.white),
+                      ],
+                    ),
+                    const SizedBox(height: AppSize.s16),
+                    Container(height: 1, color: Colors.white),
+                    const SizedBox(height: AppSize.s16),
+                    Container(
+                      width: double.infinity,
+                      height: 14,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: AppSize.s8),
+                    Container(
+                      width: double.infinity,
+                      height: 14,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: AppSize.s8),
+                    Container(
+                      width: double.infinity,
+                      height: 16,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(height: AppSize.s16),
+                    Container(
+                      width: double.infinity,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(AppSize.s12),
+                      ),
+                    ),
                   ],
                 ),
-                const SizedBox(height: AppSize.s16),
-                Row(
-                  children: [
-                    Container(width: 16, height: 16, color: Colors.white),
-                    const SizedBox(width: AppSize.s8),
-                    Container(width: 200, height: 14, color: Colors.white),
-                  ],
-                ),
-                const SizedBox(height: AppSize.s16),
-                Container(height: 1, color: Colors.white),
-                const SizedBox(height: AppSize.s16),
-                Container(
-                  width: double.infinity,
-                  height: 14,
-                  color: Colors.white,
-                ),
+              );
+            },
+            separatorBuilder: (context, index) =>
                 const SizedBox(height: AppSize.s8),
-                Container(
-                  width: double.infinity,
-                  height: 14,
-                  color: Colors.white,
-                ),
-                const SizedBox(height: AppSize.s8),
-                Container(
-                  width: double.infinity,
-                  height: 16,
-                  color: Colors.white,
-                ),
-                const SizedBox(height: AppSize.s16),
-                Container(
-                  width: double.infinity,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(AppSize.s12),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 }
 
 Widget buildStatusBadge(String status) {
-  // خريطة لكل حالة: اللون، الأيقونة
   final Map<String, Map<String, dynamic>> statusMap = {
     'pending': {'color': ColorManager.colorPrimary, 'icon': Icons.access_time},
     'accepted': {'color': Colors.blue, 'icon': Icons.thumb_up_outlined},
@@ -315,7 +348,6 @@ Widget buildStatusBadge(String status) {
     'cancelled': {'color': Colors.red, 'icon': Icons.cancel_outlined},
   };
 
-  // إذا الحالة غير موجودة، نستخدم default
   final statusData =
       statusMap[status] ?? {'color': Colors.grey, 'icon': Icons.info_outline};
 

@@ -29,4 +29,7 @@ abstract class Api {
 
   ///Delivery Fees
   static const String deliveryFee = "delivery-fee";
+
+  //notifications
+  static const String notifications = "notifications";
 }

@@ -1,6 +1,7 @@
 import 'package:gas_user_app/data/repos/address_repo.dart';
 import 'package:gas_user_app/data/repos/delivery_fee_repo.dart';
 import 'package:gas_user_app/data/repos/home_repo.dart';
+import 'package:gas_user_app/data/repos/notification_repo.dart';
 import 'package:gas_user_app/data/repos/orders_repo.dart';
 import 'package:gas_user_app/data/repos/users_repo.dart';
 import 'package:gas_user_app/presentation/pages/cart_page/cart_page_controller.dart';
@@ -22,5 +23,6 @@ class AppBinding extends Bindings {
     Get.put(CartController());
     Get.put(AddressRepo());
     Get.put(OrderRepo());
+    Get.put(NotificationRepo()..initialize());
   }
 }

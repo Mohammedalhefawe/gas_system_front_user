@@ -5,15 +5,31 @@ import 'package:intl/intl.dart';
 
 class DateConverter {
   static DateTime? stringToDate(String? dateString, {String? format}) {
-    if (dateString == null) {
-      return null;
-    }
+    if (dateString == null) return null;
 
-    DateTime utcTime = DateFormat(
-      format ?? "yyyy-MM-ddTHH:mm:ss",
-    ).parse(dateString, true);
-    DateTime localTime = utcTime.toLocal();
-    return localTime;
+    try {
+      // نحاول نقرأ التاريخ الكامل
+      DateTime utcTime = DateFormat(
+        format ?? "yyyy-MM-ddTHH:mm:ss",
+      ).parse(dateString, true);
+      return utcTime.toLocal();
+    } catch (_) {
+      try {
+        // إذا فيها وقت فقط، نضيف تاريخ افتراضي اليوم
+        DateTime timeOnly = DateFormat("HH:mm:ss").parse(dateString);
+        DateTime now = DateTime.now();
+        return DateTime(
+          now.year,
+          now.month,
+          now.day,
+          timeOnly.hour,
+          timeOnly.minute,
+          timeOnly.second,
+        );
+      } catch (_) {
+        return null; // صيغة غير صالحة
+      }
+    }
   }
 
   static String formatTimeOnly(String serverString) {
@@ -90,9 +106,9 @@ class DateConverter {
     );
 
     if (messageDate == today) {
-      return "Today ${DateFormat('HH:mm').format(timestamp)}";
+      return "${"Today".tr} ${DateFormat('HH:mm').format(timestamp)}";
     } else if (messageDate == yesterday) {
-      return "Yesterday ${DateFormat('HH:mm').format(timestamp)}";
+      return "${"Yesterday".tr} ${DateFormat('HH:mm').format(timestamp)}";
     } else {
       return DateFormat(
         'EEE d MMM, yyyy HH:mm',
