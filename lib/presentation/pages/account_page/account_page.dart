@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gas_user_app/core/app_config/app_translation.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
 import 'package:gas_user_app/data/models/user_model.dart';
 import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
 import 'package:gas_user_app/presentation/pages/account_page/account_controller.dart';
+import 'package:gas_user_app/presentation/pages/company_info_page/company_info_page.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/navigation_manager.dart';
@@ -231,6 +233,9 @@ class AccountPage extends GetView<AccountController> {
               SizedBox(height: AppSize.s4),
               Text(
                 value,
+                textDirection: AppTranslations.isArabic
+                    ? TextDirection.ltr
+                    : TextDirection.rtl,
                 style: TextStyle(
                   fontSize: FontSize.s14,
                   color: ColorManager.colorFontPrimary,
@@ -278,7 +283,9 @@ class AccountPage extends GetView<AccountController> {
             icon: Assets.icons.helpIcon,
             text: 'privacy_policy'.tr,
             description: 'ReadOurPrivacyPolicy'.tr,
-            onTap: () => controller.openUrl('https://example.com/privacy'),
+            onTap: () {
+              Get.to(CompanyInfoPage());
+            },
           ),
           _buildDivider(),
           _buildOptionItem(

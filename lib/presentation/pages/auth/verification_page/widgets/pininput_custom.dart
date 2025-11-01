@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gas_user_app/core/app_config/app_translation.dart';
 import 'package:get/get.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/values_manager.dart';
@@ -18,7 +19,9 @@ class PinPutCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Directionality(
-        textDirection: TextDirection.ltr,
+        textDirection: AppTranslations.isArabic
+            ? TextDirection.ltr
+            : TextDirection.rtl,
         child: Pinput(
           controller: controller,
           length: 6,
