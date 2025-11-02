@@ -4,11 +4,12 @@ import 'package:gas_user_app/data/models/order_model.dart';
 import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
 import 'package:gas_user_app/presentation/pages/order_details_page/order_details_page.dart';
 import 'package:gas_user_app/presentation/pages/orders_page/orders_controller.dart';
+import 'package:gas_user_app/presentation/pages/orders_page/widgets/content_empty_orders_widget.dart';
+import 'package:gas_user_app/presentation/pages/orders_page/widgets/shimmer_orders_page_widget.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/values_manager.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 
 class OrdersPage extends GetView<OrdersPageController> {
   const OrdersPage({super.key});
@@ -18,58 +19,13 @@ class OrdersPage extends GetView<OrdersPageController> {
     Get.put(OrdersPageController());
     return Obx(() {
       if (controller.loadingState.value == LoadingState.loading) {
-        return _buildShimmerList();
+        return ShimmerOrdersPageWidget();
       }
       if (controller.loadingState.value == LoadingState.doneWithNoData) {
-        return _buildEmptyState();
+        return ContentEmptyOrdersPageWidget();
       }
       return _buildOrdersList();
     });
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p28),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: AppSize.s120,
-              height: AppSize.s120,
-              decoration: BoxDecoration(
-                color: ColorManager.colorPrimary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.shopping_bag_outlined,
-                size: AppSize.s60,
-                color: ColorManager.colorPrimary,
-              ),
-            ),
-            const SizedBox(height: AppSize.s28),
-            Text(
-              'NoOrders'.tr,
-              style: TextStyle(
-                fontSize: FontSize.s24,
-                fontWeight: FontWeight.w700,
-                color: ColorManager.colorFontPrimary,
-              ),
-            ),
-            const SizedBox(height: AppSize.s12),
-            Text(
-              'NoOrdersPrompt'.tr,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: FontSize.s16,
-                color: ColorManager.colorDoveGray600,
-                height: 1.5,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _buildOrdersList() {
@@ -244,116 +200,6 @@ class OrdersPage extends GetView<OrdersPageController> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildShimmerList() {
-    return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
-      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
-      child: CustomScrollView(
-        slivers: [
-          SliverList.separated(
-            itemCount: 4,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  if (index == 0) const SizedBox(height: AppSize.s16),
-
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.p16,
-                    ),
-                    padding: const EdgeInsets.all(AppPadding.p20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(AppSize.s16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 120,
-                                  height: 18,
-                                  color: Colors.white,
-                                ),
-                                const SizedBox(height: AppSize.s6),
-                                Container(
-                                  width: 80,
-                                  height: 14,
-                                  color: Colors.white,
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: 70,
-                              height: 28,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSize.s16),
-                        Row(
-                          children: [
-                            Container(
-                              width: 16,
-                              height: 16,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(width: AppSize.s8),
-                            Container(
-                              width: 200,
-                              height: 14,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSize.s16),
-                        Container(height: 1, color: Colors.white),
-                        const SizedBox(height: AppSize.s16),
-                        Container(
-                          width: double.infinity,
-                          height: 14,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(height: AppSize.s8),
-                        Container(
-                          width: double.infinity,
-                          height: 14,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(height: AppSize.s8),
-                        Container(
-                          width: double.infinity,
-                          height: 16,
-                          color: Colors.white,
-                        ),
-                        const SizedBox(height: AppSize.s16),
-                        Container(
-                          width: double.infinity,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(AppSize.s12),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
-            separatorBuilder: (context, index) =>
-                const SizedBox(height: AppSize.s8),
-          ),
-        ],
-      ),
     );
   }
 }

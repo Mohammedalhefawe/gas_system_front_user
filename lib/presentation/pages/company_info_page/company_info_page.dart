@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/core/app_config/app_translation.dart';
-import 'package:gas_user_app/data/enums/loading_state_enum.dart';
 import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
 import 'package:gas_user_app/presentation/custom_widgets/normal_app_bar.dart';
 import 'package:gas_user_app/presentation/pages/company_info_page/company_info_controller.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/values_manager.dart';
 import 'package:get/get.dart';
-import 'package:shimmer/shimmer.dart';
 
 class CompanyInfoPage extends GetView<CompanyInfoController> {
   const CompanyInfoPage({super.key});
@@ -21,59 +19,8 @@ class CompanyInfoPage extends GetView<CompanyInfoController> {
         backgroundColor: ColorManager.colorGrey0,
         appBar: NormalAppBar(title: 'CompanyInfo'.tr, backIcon: true),
         body: Obx(() {
-          if (controller.loadingState.value == LoadingState.loading) {
-            return _buildShimmerDetails();
-          }
-          if (controller.loadingState.value == LoadingState.doneWithNoData) {
-            return _buildErrorState();
-          }
           return _buildCompanyInfo(context);
         }),
-      ),
-    );
-  }
-
-  Widget _buildErrorState() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p28),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: AppSize.s100,
-              height: AppSize.s100,
-              decoration: BoxDecoration(
-                color: ColorManager.colorPrimary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.error_outline,
-                size: 50,
-                color: ColorManager.colorPrimary,
-              ),
-            ),
-            const SizedBox(height: AppSize.s24),
-            Text(
-              'CompanyInfoNotAvailable'.tr,
-              style: TextStyle(
-                fontSize: FontSize.s22,
-                fontWeight: FontWeight.w700,
-                color: ColorManager.colorFontPrimary,
-              ),
-            ),
-            const SizedBox(height: AppSize.s12),
-            Text(
-              'CompanyInfoNotAvailablePrompt'.tr,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: FontSize.s16,
-                color: ColorManager.colorDoveGray600,
-                height: 1.5,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -97,7 +44,7 @@ class CompanyInfoPage extends GetView<CompanyInfoController> {
                   width: AppSize.s60,
                   height: AppSize.s60,
                   decoration: BoxDecoration(
-                    color: ColorManager.colorPrimary.withOpacity(0.1),
+                    color: ColorManager.colorPrimary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -298,82 +245,6 @@ class CompanyInfoPage extends GetView<CompanyInfoController> {
                 size: AppSize.s16,
                 color: ColorManager.colorDoveGray300,
               ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: FontSize.s14,
-              color: ColorManager.colorDoveGray600,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: FontSize.s14,
-              color: ColorManager.colorFontPrimary,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildShimmerDetails() {
-    return Shimmer.fromColors(
-      baseColor: ColorManager.colorGrey2.withValues(alpha: 0.3),
-      highlightColor: ColorManager.colorGrey2.withValues(alpha: 0.1),
-      child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p16),
-        child: Column(
-          children: [
-            // Header Shimmer
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(AppSize.s20),
-              ),
-            ),
-            const SizedBox(height: AppSize.s16),
-            // Description Shimmer
-            Container(
-              height: 120,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(AppSize.s16),
-              ),
-            ),
-            const SizedBox(height: AppSize.s16),
-            // Contact Shimmer
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(AppSize.s16),
-              ),
-            ),
-            const SizedBox(height: AppSize.s16),
-            // Details Shimmer
-            Container(
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(AppSize.s16),
-              ),
-            ),
           ],
         ),
       ),
