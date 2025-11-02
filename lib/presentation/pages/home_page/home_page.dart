@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
 import 'package:gas_user_app/data/models/product_model.dart';
-import 'package:gas_user_app/presentation/custom_widgets/custom_toasts.dart';
 import 'package:gas_user_app/presentation/pages/home_page/home_page_controller.dart';
 import 'package:gas_user_app/presentation/pages/home_page/widgets/ad_space_widget.dart';
 import 'package:gas_user_app/presentation/pages/home_page/widgets/products_widget.dart';
@@ -25,6 +24,7 @@ class HomePage extends GetView<HomePageController> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: AppSize.s16),
             Obx(() {
               if (controller.adsLoadingState.value == LoadingState.loading) {
                 return const AdSpace(ads: [], isLoading: true);
@@ -38,6 +38,8 @@ class HomePage extends GetView<HomePageController> {
               }
               return AdSpace(ads: controller.ads);
             }),
+            const SizedBox(height: AppSize.s12),
+
             Obx(() {
               if (controller.productsLoadingState.value ==
                   LoadingState.loading) {

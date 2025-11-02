@@ -13,6 +13,7 @@ const kPushNotification = "kPushNotificationKey";
 const kLanguageCode = "kLanguageCode";
 const kCurrentAccountModeCode = "kCurrentAccountModeCode";
 const kCartItemsKey = "kCartItemsKey";
+const kNotificationCountKey = "kNotificationCountKey";
 
 class CacheService extends GetxService {
   late GetStorage _getStorage;
@@ -79,6 +80,24 @@ class CacheService extends GetxService {
 
   String? getFCMToken() {
     return _getStorage.read(kFCMTokenKey);
+  }
+
+  void storeNotificationCount(int count) {
+    _getStorage.write(kNotificationCountKey, count);
+  }
+
+  int? getNotificationCount() {
+    return _getStorage.read(kNotificationCountKey);
+  }
+
+  void increaseNotificationCount() {
+    int count = _getStorage.read(kNotificationCountKey);
+    _getStorage.write(kNotificationCountKey, count + 1);
+  }
+
+  void decreaseNotificationCount() {
+    int count = _getStorage.read(kNotificationCountKey);
+    _getStorage.write(kNotificationCountKey, count - 1);
   }
 
   void storePushNotification(bool pushNotification) {

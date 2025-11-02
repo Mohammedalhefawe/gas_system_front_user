@@ -75,7 +75,7 @@ class OrdersPage extends GetView<OrdersPageController> {
   Widget _buildOrdersList() {
     return Column(
       children: [
-        const SizedBox(height: AppSize.s8),
+        const SizedBox(height: AppSize.s16),
         Expanded(
           child: RefreshIndicator(
             onRefresh: controller.refreshOrders,
@@ -256,77 +256,97 @@ class OrdersPage extends GetView<OrdersPageController> {
           SliverList.separated(
             itemCount: 4,
             itemBuilder: (context, index) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-                padding: const EdgeInsets.all(AppPadding.p20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(AppSize.s16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              return Column(
+                children: [
+                  if (index == 0) const SizedBox(height: AppSize.s16),
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: AppPadding.p16,
+                    ),
+                    padding: const EdgeInsets.all(AppPadding.p20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(AppSize.s16),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 120,
+                                  height: 18,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(height: AppSize.s6),
+                                Container(
+                                  width: 80,
+                                  height: 14,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
                             Container(
-                              width: 120,
-                              height: 18,
+                              width: 70,
+                              height: 28,
                               color: Colors.white,
                             ),
-                            const SizedBox(height: AppSize.s6),
+                          ],
+                        ),
+                        const SizedBox(height: AppSize.s16),
+                        Row(
+                          children: [
                             Container(
-                              width: 80,
+                              width: 16,
+                              height: 16,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(width: AppSize.s8),
+                            Container(
+                              width: 200,
                               height: 14,
                               color: Colors.white,
                             ),
                           ],
                         ),
-                        Container(width: 70, height: 28, color: Colors.white),
+                        const SizedBox(height: AppSize.s16),
+                        Container(height: 1, color: Colors.white),
+                        const SizedBox(height: AppSize.s16),
+                        Container(
+                          width: double.infinity,
+                          height: 14,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: AppSize.s8),
+                        Container(
+                          width: double.infinity,
+                          height: 14,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: AppSize.s8),
+                        Container(
+                          width: double.infinity,
+                          height: 16,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: AppSize.s16),
+                        Container(
+                          width: double.infinity,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(AppSize.s12),
+                          ),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: AppSize.s16),
-                    Row(
-                      children: [
-                        Container(width: 16, height: 16, color: Colors.white),
-                        const SizedBox(width: AppSize.s8),
-                        Container(width: 200, height: 14, color: Colors.white),
-                      ],
-                    ),
-                    const SizedBox(height: AppSize.s16),
-                    Container(height: 1, color: Colors.white),
-                    const SizedBox(height: AppSize.s16),
-                    Container(
-                      width: double.infinity,
-                      height: 14,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: AppSize.s8),
-                    Container(
-                      width: double.infinity,
-                      height: 14,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: AppSize.s8),
-                    Container(
-                      width: double.infinity,
-                      height: 16,
-                      color: Colors.white,
-                    ),
-                    const SizedBox(height: AppSize.s16),
-                    Container(
-                      width: double.infinity,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(AppSize.s12),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               );
             },
             separatorBuilder: (context, index) =>

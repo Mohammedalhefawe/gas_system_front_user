@@ -23,8 +23,7 @@ class AdSpace extends StatelessWidget {
       return _buildEmptyAdSpace();
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppPadding.p16),
+    return SizedBox(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

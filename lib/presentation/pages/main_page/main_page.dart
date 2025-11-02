@@ -82,8 +82,18 @@ class MainPageAppBar extends GetView<MainController>
               onTap: () async {
                 Get.toNamed(AppRoutes.notificationRoute);
               },
-              child: Assets.icons.notificationIcon.svg(
-                width: AppSize.sWidth * 0.065,
+              child: badges.Badge(
+                showBadge: controller.notificationsCount.value != 0,
+                position: badges.BadgePosition.topStart(),
+                badgeContent: Text(
+                  controller.notificationsCount.value.toString(),
+                  style: Get.textTheme.labelSmall!.copyWith(
+                    color: ColorManager.colorWhite,
+                  ),
+                ),
+                child: Assets.icons.notificationIcon.svg(
+                  width: AppSize.sWidth * 0.065,
+                ),
               ),
             ),
             SizedBox(width: AppSize.sWidth * 0.06),
@@ -120,8 +130,18 @@ class MainPageAppBar extends GetView<MainController>
               onTap: () async {
                 Get.toNamed(AppRoutes.notificationRoute);
               },
-              child: Assets.icons.notificationIcon.svg(
-                width: AppSize.sWidth * 0.065,
+              child: badges.Badge(
+                showBadge: controller.notificationsCount.value != 0,
+                position: badges.BadgePosition.topStart(),
+                badgeContent: Text(
+                  controller.notificationsCount.value.toString(),
+                  style: Get.textTheme.labelSmall!.copyWith(
+                    color: ColorManager.colorWhite,
+                  ),
+                ),
+                child: Assets.icons.notificationIcon.svg(
+                  width: AppSize.sWidth * 0.065,
+                ),
               ),
             ),
             SizedBox(width: AppSize.sWidth * 0.06),
@@ -134,14 +154,7 @@ class MainPageAppBar extends GetView<MainController>
           elevation: 0,
           automaticallyImplyLeading: false,
           title: Text('account'.tr, style: Get.textTheme.titleLarge),
-          /*title: Row(
-            children: [
-              Text('account'.tr, style: Get.textTheme.titleLarge),
-              const Spacer(),
-              if (controller.cacheService.isLoggedIn()) AccountModeSwitch(),
-              const Spacer(),
-            ],
-          ),*/
+
           actions: [
             SizedBox(width: AppSize.sWidth * 0.04),
             InkWell(
@@ -165,8 +178,18 @@ class MainPageAppBar extends GetView<MainController>
               onTap: () async {
                 Get.toNamed(AppRoutes.notificationRoute);
               },
-              child: Assets.icons.notificationIcon.svg(
-                width: AppSize.sWidth * 0.065,
+              child: badges.Badge(
+                showBadge: controller.notificationsCount.value != 0,
+                position: badges.BadgePosition.topStart(),
+                badgeContent: Text(
+                  controller.notificationsCount.value.toString(),
+                  style: Get.textTheme.labelSmall!.copyWith(
+                    color: ColorManager.colorWhite,
+                  ),
+                ),
+                child: Assets.icons.notificationIcon.svg(
+                  width: AppSize.sWidth * 0.065,
+                ),
               ),
             ),
             SizedBox(width: AppSize.sWidth * 0.06),

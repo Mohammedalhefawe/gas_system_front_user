@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/repos/orders_repo.dart';
+import 'package:gas_user_app/presentation/pages/main_page/main_page_controller.dart';
 import 'package:gas_user_app/presentation/pages/order_details_page/order_details_page.dart';
 import 'package:get/get.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
@@ -10,6 +11,7 @@ import 'package:gas_user_app/presentation/custom_widgets/custom_toasts.dart';
 class NotificationsPageController extends GetxController {
   final NotificationRepo notificationsRepo = Get.find<NotificationRepo>();
   final OrderRepo orderRepo = Get.find<OrderRepo>();
+  MainController? mainController;
   RxList<NotificationModel> notifications = <NotificationModel>[].obs;
   final loadingNotificationsState = LoadingState.idle.obs;
   final loadingMoreNotificationsState = LoadingState.idle.obs;
@@ -120,6 +122,7 @@ class NotificationsPageController extends GetxController {
             "Failed to mark notification as read".tr,
         type: CustomToastType.error,
       ).show();
+
       return;
     }
 
@@ -129,7 +132,11 @@ class NotificationsPageController extends GetxController {
     );
     if (index != -1) {
       notifications[index] = notifications[index].copyWith(isRead: true);
-      notifications.refresh(); // Trigger reactive update
+      notifications.refresh();
+      if (Get.isRegistered<MainController>()) {
+        mainController ??= Get.find<MainController>();
+        mainController!.notificationsCount.value--;
+      }
       Get.to(
         () => OrderDetailsPage(),
         arguments: notifications[index].relatedOrderId,
