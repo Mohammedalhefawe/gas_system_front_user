@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/models/cart_item_model.dart';
+import 'package:gas_user_app/presentation/custom_widgets/custom_cached_network_image_widget.dart';
 import 'package:gas_user_app/presentation/pages/cart_page/cart_page_controller.dart';
 import 'package:gas_user_app/presentation/pages/cart_page/widgets/image_placeholder_widget.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
@@ -44,11 +45,9 @@ class CartItemWidget extends StatelessWidget {
                           item.product.imageUrl!.isNotEmpty
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(AppSize.s12),
-                          child: Image.network(
-                            item.product.imageUrl!,
+                          child: CustomCachedNetworkImage(
+                            imageUrl: item.product.imageUrl!,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                ImagePlaceholderWidget(),
                           ),
                         )
                       : ImagePlaceholderWidget(),

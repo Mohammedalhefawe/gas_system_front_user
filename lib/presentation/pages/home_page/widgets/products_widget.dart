@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/models/product_model.dart';
 import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
@@ -271,16 +270,6 @@ class ProductTile extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildImagePlaceholder() {
-    return Center(
-      child: Icon(
-        Icons.gas_meter_rounded,
-        size: AppSize.s34,
-        color: ColorManager.colorDoveGray600,
       ),
     );
   }
