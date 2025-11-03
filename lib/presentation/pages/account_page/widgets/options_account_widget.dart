@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/presentation/pages/account_page/account_controller.dart';
 import 'package:gas_user_app/presentation/pages/company_info_page/company_info_page.dart';
+import 'package:gas_user_app/presentation/pages/terms_and_conditions_page.dart/terms_and_conditions_page.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/navigation_manager.dart';
@@ -54,7 +55,9 @@ class OptionsSectionWidget extends GetView<AccountController> {
             icon: Assets.icons.summaryIcon,
             text: 'terms_conditions'.tr,
             description: 'ReadTermsConditions'.tr,
-            onTap: () => controller.openUrl('https://example.com/terms'),
+            onTap: () {
+              Get.to(() => TermsAndConditionsPage());
+            },
           ),
           _buildDivider(),
           _buildOptionItem(

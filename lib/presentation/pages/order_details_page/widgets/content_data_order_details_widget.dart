@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gas_user_app/data/enums/order_status_enum.dart';
 import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
 import 'package:gas_user_app/presentation/pages/order_details_page/order_details_controller.dart';
 import 'package:gas_user_app/presentation/pages/order_details_page/widgets/order_item_card_widget.dart';
-import 'package:gas_user_app/presentation/pages/orders_page/orders_page.dart';
+import 'package:gas_user_app/presentation/pages/orders_page/widgets/status_order_badge_widget.dart';
 import 'package:gas_user_app/presentation/util/date_converter.dart';
 import 'package:gas_user_app/presentation/util/resources/assets.gen.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
@@ -60,7 +61,7 @@ class ContentDataOrderDetailsWidget extends GetView<OrderDetailsController> {
                               ),
                               const SizedBox(height: AppSize.s4),
                               Text(
-                                '${order.orderStatus}Des'.tr,
+                                '${order.orderStatus.translationKey}Des'.tr,
                                 style: TextStyle(
                                   fontSize: FontSize.s14,
                                   color: ColorManager.colorDoveGray600,
@@ -69,11 +70,11 @@ class ContentDataOrderDetailsWidget extends GetView<OrderDetailsController> {
                             ],
                           ),
                         ),
-                        buildStatusBadge(order.orderStatus),
+                        StatusOrderBadgeWidget(status: order.orderStatus),
                       ],
                     ),
-                    if (order.orderStatus == 'pending' ||
-                        (order.orderStatus == 'completed' &&
+                    if (order.orderStatus == OrderStatus.pending ||
+                        (order.orderStatus == OrderStatus.completed &&
                             order.rating == null &&
                             order.review == null))
                       Column(
@@ -86,30 +87,33 @@ class ContentDataOrderDetailsWidget extends GetView<OrderDetailsController> {
                               Expanded(
                                 child: AppButton(
                                   onPressed: () {
-                                    if (order.orderStatus == 'pending') {
+                                    if (order.orderStatus ==
+                                        OrderStatus.pending) {
                                       controller.showCancelConfirmation(
                                         context,
                                       );
                                     } else if (order.orderStatus ==
-                                        'completed') {
+                                        OrderStatus.completed) {
                                       Get.toNamed(
                                         AppRoutes.addReviewOrderRoute,
                                         arguments: order.orderId,
                                       );
                                     }
                                   },
-                                  text: order.orderStatus == 'pending'
+                                  text: order.orderStatus == OrderStatus.pending
                                       ? 'CancelOrder'.tr
                                       : 'RateOrder'.tr,
                                   backgroundColor: ColorManager.colorWhite,
                                   border: Border.all(
                                     width: 1,
-                                    color: order.orderStatus == 'pending'
+                                    color:
+                                        order.orderStatus == OrderStatus.pending
                                         ? ColorManager.colorSecondaryRed
                                         : ColorManager.colorPrimary,
                                   ),
 
-                                  fontColor: order.orderStatus == 'pending'
+                                  fontColor:
+                                      order.orderStatus == OrderStatus.pending
                                       ? ColorManager.colorSecondaryRed
                                       : ColorManager.colorPrimary,
                                 ),
@@ -177,7 +181,7 @@ class ContentDataOrderDetailsWidget extends GetView<OrderDetailsController> {
           _buildInfoCard(
             title: 'OrderItems'.tr,
             children: [
-              ...order.items.map((item) => OrderItemCardWidget(item: item)),
+              ...order.items.map((item) => OrderItemsCardWidget(item: item)),
             ],
           ),
 

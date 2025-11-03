@@ -4,9 +4,9 @@ import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/values_manager.dart';
 import 'package:get/get.dart';
 
-class OrderItemCardWidget extends StatelessWidget {
+class OrderItemsCardWidget extends StatelessWidget {
   final OrderItemModel item;
-  const OrderItemCardWidget({super.key, required this.item});
+  const OrderItemsCardWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

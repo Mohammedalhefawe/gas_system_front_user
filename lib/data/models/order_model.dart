@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:gas_user_app/data/enums/order_status_enum.dart';
 import 'package:gas_user_app/data/models/address_model.dart';
 import 'package:gas_user_app/data/models/product_model.dart';
 
@@ -10,7 +11,7 @@ class OrderModel {
   final int addressId;
   final String totalAmount;
   final String deliveryFee;
-  final String orderStatus;
+  final OrderStatus orderStatus;
   final String orderDate;
   final String? deliveryDate;
   final String? deliveryTime;
@@ -44,28 +45,6 @@ class OrderModel {
     required this.address,
   });
 
-  Map<String, dynamic> toJson() => {
-    'order_id': orderId,
-    'customer_id': customerId,
-    'driver_id': driverId,
-    'address_id': addressId,
-    'total_amount': totalAmount,
-    'delivery_fee': deliveryFee,
-    'order_status': orderStatus,
-    'order_date': orderDate,
-    'delivery_date': deliveryDate,
-    'delivery_time': deliveryTime,
-    'payment_method': paymentMethod,
-    'payment_status': paymentStatus,
-    'note': note,
-    'immediate': immediate ? 1 : 0,
-    'rating': rating,
-    'review': review,
-    'items': items.map((item) => item.toJson()).toList(),
-    'address': address.toJson(),
-  };
-
-  String toRawJson() => json.encode(toJson());
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
@@ -75,7 +54,7 @@ class OrderModel {
       addressId: json['address_id'] ?? 0,
       totalAmount: json['total_amount'] ?? '0',
       deliveryFee: json['delivery_fee'] ?? '0',
-      orderStatus: json['order_status'] ?? '',
+      orderStatus: _parseOrderStatus(json['order_status']), 
       orderDate: json['order_date'] ?? '',
       deliveryDate: json['delivery_date'],
       deliveryTime: json['delivery_time'],
@@ -96,6 +75,19 @@ class OrderModel {
 
   factory OrderModel.fromRawJson(String str) =>
       OrderModel.fromJson(json.decode(str));
+
+  /// ✅ تحويل النص القادم من الـ API إلى Enum
+  static OrderStatus _parseOrderStatus(dynamic value) {
+    if (value == null) return OrderStatus.pending;
+    if (value is int) return OrderStatus.fromValue(value);
+    if (value is String) {
+      return OrderStatus.values.firstWhere(
+        (status) => status.translationKey == value,
+        orElse: () => OrderStatus.pending,
+      );
+    }
+    return OrderStatus.pending;
+  }
 }
 
 class OrderItemModel {

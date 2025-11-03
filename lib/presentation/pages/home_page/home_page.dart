@@ -43,7 +43,7 @@ class HomePage extends GetView<HomePageController> {
             Obx(() {
               if (controller.productsLoadingState.value ==
                   LoadingState.loading) {
-                return const PopularPacks(
+                return const ProductsWidget(
                   products: [],
                   onAddToCart: _emptyCallback,
                   onAddToReview: _emptyCallback,
@@ -58,7 +58,7 @@ class HomePage extends GetView<HomePageController> {
                   controller.fetchProducts,
                 );
               }
-              return PopularPacks(
+              return ProductsWidget(
                 products: controller.products,
                 onAddToCart: (product) {
                   if (product.isExistInCart) return;

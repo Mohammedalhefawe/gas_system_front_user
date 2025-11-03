@@ -1,19 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gas_user_app/data/models/product_model.dart';
 import 'package:gas_user_app/presentation/custom_widgets/app_button.dart';
+import 'package:gas_user_app/presentation/custom_widgets/custom_cached_network_image_widget.dart';
+import 'package:gas_user_app/presentation/pages/cart_page/widgets/image_placeholder_widget.dart';
 import 'package:gas_user_app/presentation/util/resources/color_manager.dart';
 import 'package:gas_user_app/presentation/util/resources/values_manager.dart';
 import 'package:gas_user_app/presentation/util/widgets/card_widget.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
-class PopularPacks extends StatelessWidget {
+class ProductsWidget extends StatelessWidget {
   final List<ProductModel> products;
   final Function(ProductModel) onAddToCart;
   final Function(ProductModel) onAddToReview;
   final bool isLoading;
 
-  const PopularPacks({
+  const ProductsWidget({
     super.key,
     required this.products,
     required this.onAddToCart,
@@ -160,14 +163,12 @@ class ProductTile extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(
                                   AppSize.s12,
                                 ),
-                                child: Image.network(
-                                  data.imageUrl!,
+                                child: CustomCachedNetworkImage(
+                                  imageUrl: data.imageUrl!,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      _buildImagePlaceholder(),
                                 ),
                               )
-                            : _buildImagePlaceholder(),
+                            : ImagePlaceholderWidget(),
                       ),
                       if (!data.isAvailable)
                         Positioned(
