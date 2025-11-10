@@ -22,8 +22,8 @@ class AccountPage extends GetView<AccountController> {
   }
 
   Widget _buildAccountContent() {
-    final user = controller.user.value!;
-
+    final user = controller.user.value;
+    if (user == null) return ShimmerAccountPageWidget();
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(

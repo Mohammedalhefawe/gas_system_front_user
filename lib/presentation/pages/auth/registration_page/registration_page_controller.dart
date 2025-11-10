@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:gas_user_app/presentation/pages/terms_and_conditions_page.dart/terms_and_conditions_page.dart';
 import 'package:get/get.dart';
 import 'package:gas_user_app/core/services/cache_service.dart';
 import 'package:gas_user_app/data/enums/loading_state_enum.dart';
@@ -71,7 +72,9 @@ class RegistrationPageController extends GetxController {
     registerLoadingState.value = LoadingState.doneWithData;
   }
 
-  void termsOfUse() {}
+  void termsOfUse() {
+    Get.to(() => TermsAndConditionsPage());
+  }
 
   void privacyPolicy() {}
 

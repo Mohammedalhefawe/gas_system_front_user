@@ -16,22 +16,13 @@ class AgreementText extends GetView<RegistrationPageController> {
         text: TextSpan(
           style: Get.textTheme.bodySmall,
           children: [
-            TextSpan(text: "SraseUser".tr),
+            // TextSpan(text: "SraseUser".tr),
             TextSpan(
-              text: '\n${'TermsofUse'.tr}',
+              text: '\n${'TermsOfUse'.tr}',
               style: Get.textTheme.bodySmall?.copyWith(
                 color: ColorManager.colorPrimary,
               ),
               recognizer: TapGestureRecognizer()..onTap = controller.termsOfUse,
-            ),
-            const TextSpan(text: ' و '),
-            TextSpan(
-              text: 'PrivacyPolicy'.tr,
-              style: Get.textTheme.bodyMedium?.copyWith(
-                color: ColorManager.colorPrimary,
-              ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = controller.privacyPolicy,
             ),
           ],
         ),
