@@ -14,6 +14,7 @@ class CartController extends GetxController {
 
   RxInt deliveryFee = 0.obs;
 
+
   @override
   void onInit() async {
     super.onInit();

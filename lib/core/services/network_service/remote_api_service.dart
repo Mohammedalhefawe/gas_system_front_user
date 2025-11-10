@@ -7,9 +7,9 @@ import 'package:gas_user_app/core/services/cache_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-const kBaseUrl = "http://10.0.2.2:8000/api/";
+const kBaseUrl = "http://165.227.133.66/api/";
 const kImagesUrl = "";
-// const kBaseDomain = "https://quick-sale.net";
+// const kBaseUrl = "http://165.227.133.66/api/";
 
 enum Method { get, post, put, delete, patch }
 

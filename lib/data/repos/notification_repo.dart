@@ -43,6 +43,7 @@ class NotificationRepo {
 
     if (status == AuthorizationStatus.authorized) {
       String? fcmToken = cacheService.getFCMToken();
+      print("fcm: $fcmToken");
       if (fcmToken == null) {
         fcmToken = await _firebaseMessaging.getToken();
         debugPrint("FCM Token: $fcmToken");
