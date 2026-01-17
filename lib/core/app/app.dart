@@ -20,7 +20,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final cacheService = Get.find<CacheService>();
+
     return GetMaterialApp(
+      navigatorKey: appNavigatorKey,
       translations: AppTranslations(),
       useInheritedMediaQuery: true,
       builder: DevicePreview.appBuilder,
@@ -41,3 +43,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
